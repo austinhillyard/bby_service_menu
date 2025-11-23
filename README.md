@@ -53,7 +53,7 @@ erDiagram
         int id
         string title
         int rank "Section Order"
-        uuid user_id FK "Multi-user scale"
+        uuid user_id "Multi-user scale"
     }
 
     services {
