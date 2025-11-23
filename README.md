@@ -43,23 +43,23 @@ Given new items in the data file they should render just fine once local storage
 
 # Database Schema
 
-The database fields would be pretty similar Section contains a list of service items,
+The database fields would be pretty similar to the data file I have, though the relationship is reversed. The services have a reference to the section they belong to, and both sections and services have a rank field that denotes the order it appears in.
 
 ```mermaid
 erDiagram
     sections ||--o{ services : contains
 
     sections {
-        int id PK
-        varchar title
+        int id
+        string title
         int rank "Section Order"
         uuid user_id FK "Multi-user scale"
     }
 
     services {
-        int id PK
-        int section_id FK "Parent Section"
-        varchar name
+        int id
+        int section_id "Parent Section"
+        string name
         decimal price
         int duration_min
         int rank "Order within Section"
