@@ -7,19 +7,22 @@ import { Section } from '../../types';
 
 interface SortableSectionProps {
   section: Section;
+  activeId?: string | null;
+  onDragStart?: (id: string) => void;
 }
 
-export function SortableSection({ section }: SortableSectionProps) {
+export function SortableSection({ section, activeId, onDragStart }: SortableSectionProps) {
   const {
     attributes,
     listeners,
     setNodeRef,
     transform,
     transition,
+    isDragging,
   } = useSortable({ id: section.id });
 
   const style = {
-    transform: CSS.Transform.toString(transform),
+    transform: transform ? CSS.Transform.toString(transform) : undefined,
     transition,
     border: '1px solid #333',
     borderRadius: '5px',
@@ -41,7 +44,13 @@ export function SortableSection({ section }: SortableSectionProps) {
       >
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
            {section.items.map((service) => (
-             <SortableItem key={service.id} id={service.id} service={service} />
+             <SortableItem 
+               key={service.id} 
+               id={service.id} 
+               service={service}
+               activeId={activeId}
+               onDragStart={onDragStart}
+             />
            ))}
         </div>
       </SortableContext>
