@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Menu Manager
 
-## Getting Started
+This is a menu manager made by Austin Hillyard in Next.js in about 2 hours. I haven't made a project in Next.js before so quite a bit of AI was used to setup and learn about Next.js and its functionality.
 
-First, run the development server:
+## Functionality
+
+- Drag and Drop Services (Services stay within a section)
+- Drag and Drop Sections
+
+## Running it
+
+First clone the repo
+
+```bash
+git clone [URL]
+```
+
+Then install npm packages
+
+```bash
+npm install
+```
+
+Finally run the project in dev mode
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Bugs
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Blinking Items on drag release
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Whenever an item is released, it disappears briefly. I had another bug that would adjust the size of draggable items, but whenever I fixed this bug, the other reappeared.
 
-## Learn More
+I would like to have both bugs resolved, but I'm not super experienced with DnD functionality.
 
-To learn more about Next.js, take a look at the following resources:
+## Improvements
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Adding new items
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Given new items in the data file they should render just fine once local storage is cleared. Essentially whenever an update from the database is received it should add it to local storage, and preserve the existing order by adding new items to the end.
 
-## Deploy on Vercel
+# Database Schema
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The database fields would be pretty similar Section contains a list of service items,
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```mermaid
+erDiagram
+    sections ||--o{ services : contains
+
+    sections {
+        int id PK
+        varchar title
+        int rank "Section Order"
+        uuid user_id FK "Multi-user scale"
+    }
+
+    services {
+        int id PK
+        int section_id FK "Parent Section"
+        varchar name
+        decimal price
+        int duration_min
+        int rank "Order within Section"
+    }
+```
